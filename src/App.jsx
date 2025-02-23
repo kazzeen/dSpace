@@ -16,12 +16,14 @@ const App = () => {
     <Box sx={{ flexGrow: 1, bgcolor: 'background.default', minHeight: '100vh' }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component={Button} color="inherit" href="/" sx={{ mr: 'auto' }}>
             Roommate Matcher
           </Typography>
-          <Button color="inherit" href="/profile">Profile</Button>
-          <Button color="inherit" href="/matches">Find Matches</Button>
-          <Button color="inherit" href="/properties">Properties</Button>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button color="inherit" href="/profile">Profile</Button>
+            <Button color="inherit" href="/matches">Find Matches</Button>
+            <Button color="inherit" href="/properties">Properties</Button>
+          </Box>
         </Toolbar>
       </AppBar>
       <MainContent>

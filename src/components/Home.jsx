@@ -122,7 +122,12 @@ const Home = () => {
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  bgcolor: 'background.paper'
+                  bgcolor: 'background.paper',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
+                    boxShadow: (theme) => theme.shadows[8]
+                  }
                 }}
               >
                 <CardMedia
