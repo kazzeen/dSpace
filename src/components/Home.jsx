@@ -11,6 +11,7 @@ import {
   CardMedia,
   Stack
 } from '@mui/material';
+import AdContainer from './AdContainer';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -103,6 +104,8 @@ const Home = () => {
         </Container>
       </Box>
 
+      <AdContainer type="banner" />
+
       {/* Features Section */}
       <Container sx={{ py: 8 }} maxWidth="lg">
         <Typography
@@ -148,6 +151,8 @@ const Home = () => {
             </Grid>
           ))}
         </Grid>
+
+        <AdContainer type="native" />
 
         {/* Call to Action */}
         <Paper

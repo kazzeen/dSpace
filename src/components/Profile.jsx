@@ -15,7 +15,11 @@ import {
   Divider
 } from '@mui/material';
 
+import { useNavigate } from 'react-router-dom';
+import AdContainer from './AdContainer';
+
 const Profile = () => {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState({
     name: '',
     age: '',
@@ -185,11 +189,21 @@ const Profile = () => {
         </Grid>
 
         <Box sx={{ mt: 3 }}>
-          <Button variant="contained" color="primary" size="large">
+          <Button 
+            variant="contained" 
+            color="primary" 
+            size="large"
+            onClick={() => {
+              // Here you would typically save the profile data to your backend
+              // For now we'll just navigate to the profiles page
+              navigate('/profiles');
+            }}
+          >
             Save Profile
           </Button>
         </Box>
       </Paper>
+      <AdContainer type="banner" />
     </Box>
   );
 };

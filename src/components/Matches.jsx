@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AdContainer from './AdContainer';
 import {
   Box,
   Grid,
@@ -15,8 +17,13 @@ import {
   ListItemText,
   Divider
 } from '@mui/material';
+import Chat from './Chat';
 
 const Matches = () => {
+  const navigate = useNavigate();
+  const [chatOpen, setChatOpen] = useState(false);
+  const [selectedRoommate, setSelectedRoommate] = useState(null);
+  const [activeView, setActiveView] = useState('matches'); // 'matches' or 'properties'
   const [matches, setMatches] = useState({
     roommates: [
       {
@@ -115,7 +122,18 @@ const Matches = () => {
             </>
           )}
           <Box sx={{ mt: 2 }}>
-            <Button variant="contained" fullWidth>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={() => {
+                if (isRoommate) {
+                  setSelectedRoommate(match);
+                  setChatOpen(true);
+                } else {
+                  navigate(`/property/${match.id}`);
+                }
+              }}
+            >
               {isRoommate ? 'Contact Potential Roommate' : 'View Property'}
             </Button>
           </Box>
@@ -126,36 +144,72 @@ const Matches = () => {
 
   return (
     <Box sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Your Matches
-      </Typography>
-      <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-        AI-powered matches based on your preferences
-      </Typography>
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h4" gutterBottom>
+          {activeView === 'matches' ? 'Your Matches' : 'Available Properties'}
+        </Typography>
+        <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+          {activeView === 'matches' 
+            ? 'AI-powered matches based on your preferences'
+            : 'Properties that match your criteria'}
+        </Typography>
+        <Box sx={{ mt: 2, mb: 3 }}>
+          <Button
+            variant={activeView === 'matches' ? 'contained' : 'outlined'}
+            onClick={() => setActiveView('matches')}
+            sx={{ mr: 2 }}
+          >
+            Find Matches
+          </Button>
+          <Button
+            variant={activeView === 'properties' ? 'contained' : 'outlined'}
+            onClick={() => setActiveView('properties')}
+          >
+            Properties
+          </Button>
+        </Box>
+      </Box>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, backgroundColor: 'background.default' }}>
-            <Typography variant="h5" gutterBottom>
-              Potential Roommates
-            </Typography>
-            {matches.roommates.map(roommate => (
-              <MatchCard key={roommate.id} match={roommate} type="roommate" />
-            ))}
-          </Paper>
-        </Grid>
+        {activeView === 'matches' && (
+          <Grid item xs={12} md={8} sx={{ mx: 'auto' }}>
+            <Paper sx={{ p: 2, backgroundColor: 'background.default' }}>
+              <Typography variant="h5" gutterBottom>
+                Potential Roommates
+              </Typography>
+              {matches.roommates.map(roommate => (
+                <React.Fragment key={roommate.id}>
+                  <MatchCard match={roommate} type="roommate" />
+                  <AdContainer type="native" />
+                </React.Fragment>
+              ))}
+            </Paper>
+          </Grid>
+        )}
 
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, backgroundColor: 'background.default' }}>
-            <Typography variant="h5" gutterBottom>
-              Recommended Properties
-            </Typography>
-            {matches.properties.map(property => (
-              <MatchCard key={property.id} match={property} type="property" />
-            ))}
-          </Paper>
-        </Grid>
+        {activeView === 'properties' && (
+          <Grid item xs={12} md={8} sx={{ mx: 'auto' }}>
+            <Paper sx={{ p: 2, backgroundColor: 'background.default' }}>
+              <Typography variant="h5" gutterBottom>
+                Recommended Properties
+              </Typography>
+              {matches.properties.map(property => (
+                <React.Fragment key={property.id}>
+                  <MatchCard match={property} type="property" />
+                  <AdContainer type="native" />
+                </React.Fragment>
+              ))}
+            </Paper>
+          </Grid>
+        )}
       </Grid>
+      {selectedRoommate && (
+        <Chat
+          open={chatOpen}
+          onClose={() => setChatOpen(false)}
+          recipientName={selectedRoommate.name}
+        />
+      )}
     </Box>
   );
 };
