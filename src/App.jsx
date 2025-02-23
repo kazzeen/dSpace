@@ -5,6 +5,9 @@ import { styled } from '@mui/material/styles';
 import Profile from './components/Profile';
 import Matches from './components/Matches';
 import Home from './components/Home';
+import ProfileList from './components/ProfileList';
+import ProfileDetail from './components/ProfileDetail';
+import PropertyDetail from './components/PropertyDetail';
 
 const MainContent = styled(Container)(({ theme }) => ({
   marginTop: theme.spacing(4),
@@ -23,6 +26,7 @@ const App = () => {
             <Button color="inherit" href="/profile">Profile</Button>
             <Button color="inherit" href="/matches">Find Matches</Button>
             <Button color="inherit" href="/properties">Properties</Button>
+            <Button color="inherit" href="/profiles">Browse Profiles</Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -32,6 +36,9 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/properties" element={<Matches />} />
+          <Route path="/profiles" element={<ProfileList />} />
+          <Route path="/profile/:id" element={<ProfileDetail />} />
+          <Route path="/property/:id" element={<PropertyDetail />} />
         </Routes>
       </MainContent>
     </Box>
